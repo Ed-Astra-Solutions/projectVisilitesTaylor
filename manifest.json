@@ -1,13 +1,17 @@
 {
-    "name": "tailor_portal",
-    "short_name": "tailor_portal",
+    "name": "VISILITES Tailor Portal",
+    "short_name": "VISILITES",
     "start_url": ".",
     "display": "standalone",
-    "background_color": "#0175C2",
-    "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "background_color": "#F5F5F0",
+    "theme_color": "#2A9D8F",
+    "description": "Tailoring at your door step — schedule, tasks and garment scanning for VISILITES tailors.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
+    "categories": ["business", "productivity"],
+    "id": "/",
+    "scope": "/",
+    "lang": "en-IN",
     "icons": [
         {
             "src": "icons/Icon-192.png",

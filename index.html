@@ -18,21 +18,142 @@
 
   <meta charset="UTF-8">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
-  <meta name="description" content="A new Flutter project.">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
-  <!-- iOS meta tags & icons -->
+  <title>VISILITES Tailor Portal — Tailoring at your door step</title>
+  <meta name="description" content="The VISILITES tailor portal: view your weekly schedule, work through assigned alterations, scan garment QR tags, and manage leave, complaints and ratings.">
+  <meta name="application-name" content="VISILITES Tailor Portal">
+  <meta name="author" content="Vonisha Service Foundation">
+  <meta name="theme-color" content="#2A9D8F">
+  <meta name="color-scheme" content="light">
+
+  <!-- This is a staff tool, not a public page: keep it out of search results. -->
+  <meta name="robots" content="noindex, nofollow">
+
+  <link rel="canonical" href="https://tailors.projectvisilites.com/">
+
+  <!-- Open Graph (link previews in WhatsApp, Slack, Facebook) -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="VISILITES">
+  <meta property="og:title" content="VISILITES Tailor Portal">
+  <meta property="og:description" content="Schedule, assigned alterations, garment QR scanning and profile for VISILITES tailors.">
+  <meta property="og:url" content="https://tailors.projectvisilites.com/">
+  <meta property="og:image" content="https://tailors.projectvisilites.com/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="VISILITES — Tailoring at your door step. Tailor Portal.">
+  <meta property="og:locale" content="en_IN">
+
+  <!-- Twitter/X card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="VISILITES Tailor Portal">
+  <meta name="twitter:description" content="Schedule, assigned alterations, garment QR scanning and profile for VISILITES tailors.">
+  <meta name="twitter:image" content="https://tailors.projectvisilites.com/og-image.png">
+
+  <!-- iOS home-screen behaviour -->
   <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="apple-mobile-web-app-title" content="tailor_portal">
-  <link rel="apple-touch-icon" href="icons/Icon-192.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="VISILITES">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 
-  <!-- Favicon -->
-  <link rel="icon" type="image/png" href="favicon.png"/>
+  <!-- Favicons: SVG where supported, PNG everywhere else -->
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
 
-  <title>tailor_portal</title>
   <link rel="manifest" href="manifest.json">
+
+  <script>
+    // PWA install bridge.
+    //
+    // Chrome fires `beforeinstallprompt` once, early — usually before Flutter
+    // has booted. It must be captured here and stashed, or the chance to show
+    // the native install dialog is lost. The Dart side reads this object and
+    // drives the UI; see lib/shared/services/pwa_install_web.dart.
+    (function () {
+      var deferredPrompt = null;
+
+      window.visilitesPwa = {
+        // True once Chrome has offered us an install prompt to defer.
+        canInstall: function () { return deferredPrompt !== null; },
+
+        // True when already running as an installed app, so we never nag.
+        isInstalled: function () {
+          return window.matchMedia('(display-mode: standalone)').matches
+            || window.navigator.standalone === true;
+        },
+
+        // iOS Safari never fires beforeinstallprompt; it needs manual
+        // "Share -> Add to Home Screen" instructions instead.
+        isIos: function () {
+          return /iphone|ipad|ipod/i.test(window.navigator.userAgent)
+            && !window.MSStream;
+        },
+
+        // Shows the native dialog. Resolves 'accepted', 'dismissed',
+        // or 'unavailable' if there is nothing to show.
+        promptInstall: function () {
+          if (!deferredPrompt) return Promise.resolve('unavailable');
+          var p = deferredPrompt;
+          deferredPrompt = null;
+          p.prompt();
+          return p.userChoice
+            .then(function (choice) { return choice.outcome; })
+            .catch(function () { return 'dismissed'; });
+        }
+      };
+
+      window.addEventListener('beforeinstallprompt', function (e) {
+        // Suppress Chrome's own mini-infobar so our in-app banner is the
+        // single, branded entry point.
+        e.preventDefault();
+        deferredPrompt = e;
+      });
+
+      window.addEventListener('appinstalled', function () {
+        deferredPrompt = null;
+      });
+    })();
+
+    // WebOTP bridge — zero-tap SMS code entry on Android Chrome.
+    //
+    // This is a bonus layer on top of the keyboard suggestion that
+    // autocomplete="one-time-code" already provides. It only fires when the
+    // SMS ends with an origin-binding line:
+    //
+    //     @<this-origin> #<code>
+    //
+    // Until the DLT-registered template carries that line the call simply
+    // never resolves, which is harmless — the keyboard suggestion still works.
+    // Requires a secure context (HTTPS or localhost).
+    (function () {
+      var controller = null;
+
+      window.visilitesOtp = {
+        isSupported: function () {
+          return 'OTPCredential' in window && window.isSecureContext;
+        },
+
+        // Resolves with the code, or '' if cancelled/unsupported/failed.
+        listen: function () {
+          if (!this.isSupported()) return Promise.resolve('');
+          this.cancel();
+          controller = new AbortController();
+          return navigator.credentials
+            .get({ otp: { transport: ['sms'] }, signal: controller.signal })
+            .then(function (c) { return (c && c.code) || ''; })
+            .catch(function () { return ''; });
+        },
+
+        cancel: function () {
+          if (controller) { controller.abort(); controller = null; }
+        }
+      };
+    })();
+  </script>
 </head>
 <body>
   <script src="flutter_bootstrap.js" async></script>
+  <script src="version_check.js"></script>
 </body>
 </html>
