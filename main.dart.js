@@ -103721,7 +103721,7 @@ var $async$na=A.o(function(c,d){if(c===1)return A.p(d,r)
 for(;;)switch(s){case 0:s=3
 return A.m(p.nN(),$async$na)
 case 3:o=d
-n=A.da("http://localhost:3000"+a,0,null)
+n=A.da("https://api.projectvisilites.com"+a,0,null)
 if(b!=null)n=n.a4k(b)
 A.a65().$1("GET "+n.k(0))
 s=4
@@ -103743,7 +103743,7 @@ case 6:s=4
 break
 case 5:e=null
 case 4:n=e
-m=A.da("http://localhost:3000"+a,0,null)
+m=A.da("https://api.projectvisilites.com"+a,0,null)
 A.a65().$1("POST "+m.k(0))
 o=p.AT(n)
 s=7
@@ -103759,7 +103759,7 @@ var $async$qG=A.o(function(c,d){if(c===1)return A.p(d,r)
 for(;;)switch(s){case 0:s=3
 return A.m(p.nN(),$async$qG)
 case 3:n=d
-m=A.da("http://localhost:3000"+a,0,null)
+m=A.da("https://api.projectvisilites.com"+a,0,null)
 A.a65().$1("PUT "+m.k(0))
 o=p.AT(n)
 s=4
@@ -103775,7 +103775,7 @@ var $async$uJ=A.o(function(e,f){if(e===1)return A.p(f,r)
 for(;;)switch(s){case 0:s=3
 return A.m(p.nN(),$async$uJ)
 case 3:l=f
-k=A.da("http://localhost:3000"+a,0,null)
+k=A.da("https://api.projectvisilites.com"+a,0,null)
 A.a65().$1("POST (multipart) "+k.k(0))
 o=A.b3j("POST",k)
 n=t.N
@@ -103802,7 +103802,7 @@ var $async$mX=A.o(function(b,c){if(b===1)return A.p(c,r)
 for(;;)switch(s){case 0:s=3
 return A.m(p.nN(),$async$mX)
 case 3:n=c
-m=A.da("http://localhost:3000"+a,0,null)
+m=A.da("https://api.projectvisilites.com"+a,0,null)
 A.a65().$1("PATCH "+m.k(0))
 o=p.AT(n)
 s=4
